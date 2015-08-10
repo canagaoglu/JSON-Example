@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JSON Example by Can Agaoglu</title>
+</head>
+
+<body>
+
+<style>
+        body {font-family:sans-serif;}
+        ul {list-style: none;}
+        li {padding:5px 0;}
+        small {display:block;}
+        #myArea {
+            background:#dddddd;
+            height:400px;
+            overflow: auto;
+        }
+</style>
+
+
+    <ul id="myArea">
+        
+    </ul>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        $ (function() {
+            function loadPosts () {
+                var api = "http://www.stellarbiotechnologies.com/media/press-releases/json";
+                var load_more = function (offset) {
+                    $.getJSON(api + "?limit=20&offset=" + offset,function(data) {
+                        $.each(data.news, function(i, item) {
+                            $("#myArea").append('<li><small>Publish Date: ' + item.published + '</small>' + item.title + '</li>')
+                        });
+
+                        $('#myArea').bind('scroll', function() {
+                            if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                                if (data.news.length == 20) {
+                                    load_more(offset + 20);
+                                }
+                            }
+                        });
+                    });
+                };
+
+                load_more(0);
+            }
+
+            loadPosts();
+
+        });
+    </script>
+</body>
+</html>
